@@ -1,0 +1,16 @@
+# Environnement Python
+_pycache_/
+*.pyc
+venv/
+.env
+
+# Modele ML (trop gros pour GitHub)
+models/*.pkl
+
+# Fichiers OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
