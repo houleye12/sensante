@@ -118,3 +118,29 @@ probas = model_loaded.predict_proba([features])[0]
 
 print(f"Diagnostic : {diagnostic}")
 print(f"Probabilite : {probas.max():.1%}")
+# Exercice 1 : Importance des features
+importances = model.feature_importances_
+for name, imp in sorted(zip(feature_cols, importances),
+                        key=lambda x: x[1], reverse=True):
+    print(f"{name:20s} : {imp:.3f}")
+# Exercice 2 : 3 patients fictifs
+patients = [
+    {'age': 10, 'sexe': 'M', 'temperature': 37.0,
+     'tension_sys': 110, 'toux': False, 'fatigue': False,
+     'maux_tete': False, 'region': 'Dakar'},
+    {'age': 35, 'sexe': 'F', 'temperature': 40.5,
+     'tension_sys': 130, 'toux': True, 'fatigue': True,
+     'maux_tete': True, 'region': 'Dakar'},
+    {'age': 70, 'sexe': 'M', 'temperature': 38.5,
+     'tension_sys': 150, 'toux': True, 'fatigue': True,
+     'maux_tete': False, 'region': 'Dakar'},
+]
+
+for i, p in enumerate(patients):
+    s = le_sexe_loaded.transform([p['sexe']])[0]
+    r = le_region_loaded.transform([p['region']])[0]
+    f = [p['age'], s, p['temperature'], p['tension_sys'],
+         int(p['toux']), int(p['fatigue']), int(p['maux_tete']), r]
+    diag = model_loaded.predict([f])[0]
+    proba = model_loaded.predict_proba([f])[0].max()
+    print(f"Patient {i+1} ({p['age']}ans, {p['sexe']}) : {diag} ({proba:.1%})")
