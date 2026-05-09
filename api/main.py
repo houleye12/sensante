@@ -36,6 +36,15 @@ print(f"Modèle chargé : {list(model.classes_)}")
 @app.get("/health")
 def health_check():
     return {"status": "ok", "message": "SenSante API is running"}
+@app.get("/model-info")
+def model_info():
+    """Informations sur le modèle chargé."""
+    return {
+        "type": type(model).__name__,
+        "nombre_arbres": model.n_estimators,
+        "classes": list(model.classes_),
+        "nombre_features": len(feature_cols),
+    }
 @app.post("/predict", response_model=DiagnosticOutput)
 def predict(patient: PatientInput):
     # 1. Encoder les variables catégoriques
